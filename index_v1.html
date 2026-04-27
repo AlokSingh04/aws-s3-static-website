@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blooma — Plants & Flowers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #f9f4ee;
+      --moss:  #3b5240;
+      --sage:  #7a9e82;
+      --blush: #e8b4a0;
+      --clay:  #c97d5b;
+      --gold:  #d4a853;
+      --dark:  #1e2820;
+      --text:  #3a3530;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 60px;
+      border-bottom: 1px solid rgba(59,82,64,0.15);
+      background: var(--cream);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--moss);
+      text-transform: uppercase;
+    }
+
+    .logo span { color: var(--clay); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 36px;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 400;
+      transition: color .25s;
+    }
+
+    nav ul a:hover { color: var(--clay); }
+
+    .nav-cta {
+      background: var(--moss);
+      color: var(--cream) !important;
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-size: 11px !important;
+      letter-spacing: 1.5px;
+    }
+
+    .nav-cta:hover { background: var(--clay) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 65px);
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px 80px 80px;
+    }
+
+    .hero-tag {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 5vw, 80px);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--dark);
+      margin-bottom: 28px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--clay);
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      line-height: 1.85;
+      color: #7a7068;
+      max-width: 360px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .btn-primary {
+      background: var(--moss);
+      color: var(--cream);
+      padding: 14px 36px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 400;
+      transition: background .25s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover { background: var(--clay); }
+
+    .btn-secondary {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--moss);
+      text-decoration: none;
+    }
+
+    .btn-secondary:hover { color: var(--clay); }
+
+    /* Hero Right — simple gradient panel */
+    .hero-right {
+      background:
+        radial-gradient(ellipse at 65% 35%, rgba(232,180,160,.45) 0%, transparent 55%),
+        radial-gradient(ellipse at 30% 70%, rgba(122,158,130,.35) 0%, transparent 55%),
+        #e8e3db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+    }
+
+    /* Simple decorative plant emoji/icon area */
+    .hero-plant-display {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .plant-tile {
+      background: rgba(255,255,255,0.6);
+      border-radius: 12px;
+      padding: 28px 20px;
+      text-align: center;
+      border: 1px solid rgba(59,82,64,0.1);
+    }
+
+    .plant-tile-icon { font-size: 48px; margin-bottom: 10px; display: block; }
+    .plant-tile-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      color: var(--dark);
+      display: block;
+    }
+    .plant-tile-price {
+      font-size: 11px;
+      color: var(--clay);
+      letter-spacing: 1px;
+      margin-top: 6px;
+      display: block;
+    }
+
+    .plant-tile.featured {
+      grid-column: span 2;
+      background: var(--moss);
+      color: var(--cream);
+    }
+
+    .plant-tile.featured .plant-tile-name { color: var(--cream); }
+    .plant-tile.featured .plant-tile-price { color: var(--gold); }
+
+    /* ── STRIP ── */
+    .strip {
+      background: var(--moss);
+      color: var(--cream);
+      padding: 12px 60px;
+      display: flex;
+      gap: 48px;
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      align-items: center;
+    }
+
+    .strip span { color: var(--gold); margin-right: 8px; }
+
+    /* ── ABOUT ── */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      padding: 100px 80px;
+      align-items: center;
+    }
+
+    .about-img-placeholder {
+      background:
+        radial-gradient(ellipse at 40% 40%, rgba(122,158,130,.4), transparent 60%),
+        radial-gradient(ellipse at 70% 70%, rgba(232,180,160,.3), transparent 55%),
+        #e0dbd3;
+      border-radius: 8px;
+      height: 460px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+    }
+
+    .section-tag {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 18px;
+    }
+
+    .section-h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(34px, 3vw, 52px);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--dark);
+      margin-bottom: 24px;
+    }
+
+    .section-h2 em { font-style: italic; color: var(--clay); }
+
+    .about-text p {
+      font-size: 14px;
+      line-height: 1.9;
+      color: #7a7068;
+      margin-bottom: 14px;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 28px 0 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .feature-list li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 9px;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ── PRODUCTS ── */
+    .products {
+      padding: 100px 80px;
+      background: #f2ede6;
+    }
+
+    .products-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .see-all {
+      text-decoration: none;
+      color: var(--moss);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--moss);
+      padding-bottom: 2px;
+      transition: color .25s, border-color .25s;
+    }
+
+    .see-all:hover { color: var(--clay); border-color: var(--clay); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--cream);
+      border: 1px solid rgba(59,82,64,0.12);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: box-shadow .25s, transform .25s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(30,40,32,.12);
+    }
+
+    .card-img {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      position: relative;
+    }
+
+    .card-img-bg-1 { background: radial-gradient(ellipse at 50% 60%, rgba(122,158,130,.25), rgba(59,82,64,.1)); }
+    .card-img-bg-2 { background: radial-gradient(ellipse at 50% 60%, rgba(232,180,160,.25), rgba(201,125,91,.1)); }
+    .card-img-bg-3 { background: radial-gradient(ellipse at 50% 60%, rgba(212,168,83,.2), rgba(180,130,50,.1)); }
+    .card-img-bg-4 { background: radial-gradient(ellipse at 50% 60%, rgba(160,192,200,.2), rgba(80,130,140,.1)); }
+
+    .card-badge {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 500;
+      padding: 4px 9px;
+      border-radius: 3px;
+    }
+
+    .card-body { padding: 20px; }
+
+    .card-cat {
+      font-size: 9px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 6px;
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      line-height: 1.65;
+      color: #9a8e84;
+      margin-bottom: 18px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--clay);
+    }
+
+    .card-btn {
+      background: var(--moss);
+      color: var(--cream);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .25s;
+    }
+
+    .card-btn:hover { background: var(--clay); }
+
+    /* ── PROCESS ── */
+    .process {
+      padding: 100px 80px;
+      background: var(--cream);
+      text-align: center;
+    }
+
+    .process .section-h2 { max-width: 480px; margin: 0 auto 56px; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 36px;
+    }
+
+    .step { text-align: center; }
+
+    .step-num {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 1px solid var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      color: var(--moss);
+      margin: 0 auto 20px;
+    }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      line-height: 1.75;
+      color: #9a8e84;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 100px 80px;
+      background: var(--dark);
+      text-align: center;
+    }
+
+    .testimonials .section-tag { color: var(--sage); justify-content: center; }
+    .testimonials .section-h2 { color: var(--cream); max-width: 480px; margin: 0 auto 52px; }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      text-align: left;
+    }
+
+    .review-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px;
+      padding: 32px 28px;
+    }
+
+    .stars { color: var(--gold); font-size: 14px; margin-bottom: 16px; letter-spacing: 2px; }
+
+    .review-text {
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(249,244,238,.75);
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .reviewer-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--moss);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .reviewer-name {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--cream);
+    }
+
+    .reviewer-loc {
+      font-size: 11px;
+      color: var(--sage);
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      padding: 90px 80px;
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .newsletter p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #7a7068;
+      margin-top: 16px;
+    }
+
+    .nl-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .nl-input {
+      border: 1px solid rgba(59,82,64,0.2);
+      background: white;
+      padding: 14px 18px;
+      border-radius: 4px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 300;
+      outline: none;
+      transition: border-color .25s;
+    }
+
+    .nl-input:focus { border-color: var(--moss); }
+
+    .nl-btn {
+      background: var(--moss);
+      color: var(--cream);
+      border: none;
+      padding: 15px 28px;
+      border-radius: 4px;
+      font-family: 'Jost', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .25s;
+    }
+
+    .nl-btn:hover { background: var(--clay); }
+
+    .nl-note {
+      font-size: 11px;
+      color: #a09585;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(249,244,238,.6);
+      padding: 64px 80px 36px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      margin-bottom: 28px;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: var(--cream);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo span { color: var(--clay); }
+
+    .footer-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: rgba(249,244,238,.5);
+      margin-bottom: 24px;
+    }
+
+    .footer-col h4 {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 18px;
+      font-weight: 400;
+    }
+
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul a {
+      text-decoration: none;
+      color: rgba(249,244,238,.5);
+      font-size: 13px;
+      transition: color .25s;
+    }
+
+    .footer-col ul a:hover { color: var(--cream); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: rgba(249,244,238,.35);
+    }
+
+    .footer-bottom span { color: var(--clay); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="logo">Bloo<span>ma</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#process">How It Works</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a class="nav-cta" href="#">Order Now</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Sustainably Grown · Lovingly Delivered</div>
+    <h1>Bring <em>Nature</em><br>Into Your<br>Home</h1>
+    <p class="hero-desc">
+      Handpicked plants and flowers, delivered fresh from our nursery to your doorstep. Over 1,200 varieties to explore.
+    </p>
+    <div class="hero-actions">
+      <a href="#shop" class="btn-primary">Shop Now</a>
+      <a href="#about" class="btn-secondary">Our Story →</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-plant-display">
+      <div class="plant-tile featured">
+        <span class="plant-tile-icon">🌿</span>
+        <span class="plant-tile-name">Monstera Deliciosa</span>
+        <span class="plant-tile-price">₹1,299</span>
+      </div>
+      <div class="plant-tile">
+        <span class="plant-tile-icon">🌸</span>
+        <span class="plant-tile-name">Garden Rose</span>
+        <span class="plant-tile-price">₹899</span>
+      </div>
+      <div class="plant-tile">
+        <span class="plant-tile-icon">🪴</span>
+        <span class="plant-tile-name">Echeveria</span>
+        <span class="plant-tile-price">₹499</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STRIP ── -->
+<div class="strip">
+  <div><span>✦</span> Free Delivery Over ₹999</div>
+  <div><span>✦</span> 30-Day Wellness Guarantee</div>
+  <div><span>✦</span> Eco-Friendly Packaging</div>
+  <div><span>✦</span> 1,200+ Varieties</div>
+</div>
+
+<!-- ── ABOUT ── -->
+<section class="about" id="about">
+  <div class="about-img-placeholder">🌱</div>
+  <div class="about-text">
+    <div class="section-tag">About Blooma</div>
+    <h2 class="section-h2">Grown with <em>Care</em>,<br>Delivered with Love</h2>
+    <p>We believe every home deserves a touch of nature. Blooma partners with independent nurseries across India to bring you the healthiest, most beautiful plants and flowers — ethically grown, sustainably packaged.</p>
+    <p>Every order is hand-selected by our botanists and shipped with full care instructions, so your plants thrive from day one.</p>
+    <ul class="feature-list">
+      <li>Handpicked by certified botanists</li>
+      <li>100% compostable packaging</li>
+      <li>30-day plant wellness guarantee</li>
+      <li>Expert care guides with every order</li>
+    </ul>
+    <a href="#shop" class="btn-primary">Explore Collection</a>
+  </div>
+</section>
+
+<!-- ── PRODUCTS ── -->
+<section class="products" id="shop">
+  <div class="products-header">
+    <div>
+      <div class="section-tag">Our Collection</div>
+      <h2 class="section-h2">Featured <em>Plants</em> & Flowers</h2>
+    </div>
+    <a href="#" class="see-all">View All →</a>
+  </div>
+
+  <div class="cards-grid">
+    <!-- Card 1 -->
+    <div class="card">
+      <div class="card-img card-img-bg-1">
+        🌿
+        <div class="card-badge">Bestseller</div>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Indoor</div>
+        <div class="card-name">Monstera Deliciosa</div>
+        <div class="card-desc">Iconic split-leaf tropical plant, thrives in bright indirect light.</div>
+        <div class="card-footer">
+          <div class="card-price">₹1,299</div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card">
+      <div class="card-img card-img-bg-2">
+        🌸
+        <div class="card-badge">New</div>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Flowering</div>
+        <div class="card-name">Garden Rose</div>
+        <div class="card-desc">Full-bloom heritage roses with a rich floral fragrance.</div>
+        <div class="card-footer">
+          <div class="card-price">₹899</div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card">
+      <div class="card-img card-img-bg-3">🪴</div>
+      <div class="card-body">
+        <div class="card-cat">Succulent</div>
+        <div class="card-name">Echeveria Rosette</div>
+        <div class="card-desc">Low-maintenance rosette succulent, perfect for beginners.</div>
+        <div class="card-footer">
+          <div class="card-price">₹499</div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="card">
+      <div class="card-img card-img-bg-4">
+        💜
+        <div class="card-badge">Aromatic</div>
+      </div>
+      <div class="card-body">
+        <div class="card-cat">Herb</div>
+        <div class="card-name">French Lavender</div>
+        <div class="card-desc">Calming fragrance, beautiful purple blooms all summer.</div>
+        <div class="card-footer">
+          <div class="card-price">₹649</div>
+          <button class="card-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section class="process" id="process">
+  <div class="section-tag">How It Works</div>
+  <h2 class="section-h2">From <em>Nursery</em> to Your Doorstep</h2>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Browse & Choose</div>
+      <p class="step-desc">Explore our curated collection of over 1,200 plants and flowers from rare to everyday.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">We Handpick</div>
+      <p class="step-desc">Our botanists select the healthiest specimen personally for your order.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Eco Packing</div>
+      <p class="step-desc">Packed in 100% compostable materials designed to protect plants in transit.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Happy Delivery</div>
+      <p class="step-desc">Arrives healthy with care instructions and a 30-day wellness guarantee.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials" id="reviews">
+  <div class="section-tag">Testimonials</div>
+  <h2 class="section-h2">What Our <em>Plant Parents</em> Say</h2>
+
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"My Monstera arrived in perfect condition — lush, healthy, and even bigger than expected. Absolutely stunning!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">🌿</div>
+        <div>
+          <div class="reviewer-name">Priya Sharma</div>
+          <div class="reviewer-loc">Mumbai, India</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"The lavender bundles transformed my balcony. The fragrance is divine and packaging was completely plastic-free!"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">🌸</div>
+        <div>
+          <div class="reviewer-name">Anika Patel</div>
+          <div class="reviewer-loc">Delhi, India</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="stars">★★★★★</div>
+      <p class="review-text">"Gifted the succulent set to my mother. She was overjoyed — they look like tiny works of art on her windowsill."</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">🌼</div>
+        <div>
+          <div class="reviewer-name">Rahul Verma</div>
+          <div class="reviewer-loc">Bangalore, India</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER ── -->
+<section class="newsletter" id="newsletter">
+  <div class="nl-left">
+    <div class="section-tag">Stay Connected</div>
+    <h2 class="section-h2">Join Our <em>Garden</em> Community</h2>
+    <p>Get seasonal planting guides, exclusive early access to new arrivals, and a 15% welcome discount on your first order.</p>
+  </div>
+  <div class="nl-form">
+    <input class="nl-input" type="text" placeholder="Your full name"/>
+    <input class="nl-input" type="email" placeholder="Your email address"/>
+    <button class="nl-btn">Subscribe & Get 15% Off</button>
+    <p class="nl-note">No spam, ever. Unsubscribe anytime.</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">Bloo<span>ma</span></div>
+      <p class="footer-desc">Bringing the healing beauty of nature into every home, one plant at a time. Sustainably grown. Lovingly delivered.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">Indoor Plants</a></li>
+        <li><a href="#">Flowers & Bouquets</a></li>
+        <li><a href="#">Succulents</a></li>
+        <li><a href="#">Rare Botanicals</a></li>
+        <li><a href="#">Gift Sets</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Learn</h4>
+      <ul>
+        <li><a href="#">Plant Care Guides</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Seasonal Tips</a></li>
+        <li><a href="#">Workshops</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 <span>Blooma</span>. All rights reserved.</p>
+    <p>Made with <span>♥</span> for plant lovers everywhere</p>
+  </div>
+</footer>
+
+<script>
+  // Simple add-to-cart feedback
+  document.querySelectorAll('.card-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const orig = this.textContent;
+      this.textContent = '✓ Added';
+      this.style.background = '#7a9e82';
+      setTimeout(() => {
+        this.textContent = orig;
+        this.style.background = '';
+      }, 1400);
+    });
+  });
+</script>
+</body>
+</html>
